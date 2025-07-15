@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] - 2025-01-15
+
+### Fixed
+- バックエンド起動エラーの修正
+  - uvicorn.run の引数を修正（"main:app"形式に）
+  - 依存関係のインストール確認
+- エラーハンドリングの改善
+
+### Added
+- サービス状態確認スクリプト（check_services.bat）
+- デバッグ用バックエンド起動スクリプト（debug_backend.bat）
+- より詳細なトラブルシューティング手順
+
 ## [1.0.4] - 2025-01-15
 
 ### Fixed

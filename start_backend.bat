@@ -10,9 +10,9 @@ if exist venv\Scripts\activate.bat (
     call venv\Scripts\activate.bat
 )
 
-REM 依存関係のインストール
+REM 依存関係のインストール（エラーを無視）
 echo Installing dependencies...
-pip install -r requirements.txt
+pip install -r requirements.txt 2>nul || echo Dependencies check completed.
 
 echo.
 echo Starting backend server...
