@@ -1,0 +1,42 @@
+services:
+  # Backend API Service
+  - type: web
+    name: comfyui-a1111-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile.production
+    dockerContext: ./backend
+    envVars:
+      - key: COMFYUI_URL
+        value: http://localhost:8188
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 8000
+    healthCheckPath: /
+    
+  # Frontend Static Site
+  - type: web
+    name: comfyui-a1111-frontend
+    runtime: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-XSS-Protection
+        value: 1; mode=block
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://comfyui-a1111-backend.onrender.com/api/*
+      - type: rewrite
+        source: /*
+        destination: /index.html
+        
+  # ComfyUI Engine (requires GPU - not available on Render)
+  # This would need to be deployed on a GPU-enabled service
