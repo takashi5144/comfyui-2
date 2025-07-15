@@ -20,6 +20,7 @@ import os
 
 from comfyui_bridge import ComfyUIBridge
 from workflow_manager import WorkflowManager
+from samplers_config import get_sampler_list, get_scheduler_list, get_samplers_by_category, get_schedulers_by_category
 
 # FastAPIアプリケーションの初期化
 app = FastAPI(title="ComfyUI A1111-Style API", version="1.0.0")
@@ -187,15 +188,8 @@ async def get_loras():
 async def get_samplers():
     """利用可能なサンプラーの一覧を取得"""
     return {
-        "samplers": [
-            "euler", "euler_cfg_pp", "euler_ancestral", "euler_ancestral_cfg_pp",
-            "heun", "heunpp2", "dpm_2", "dpm_2_ancestral",
-            "lms", "dpm_fast", "dpm_adaptive",
-            "dpmpp_2s_ancestral", "dpmpp_sde", "dpmpp_sde_gpu",
-            "dpmpp_2m", "dpmpp_2m_sde", "dpmpp_2m_sde_gpu",
-            "dpmpp_3m_sde", "dpmpp_3m_sde_gpu", "ddpm", "lcm", "ddim",
-            "uni_pc", "uni_pc_bh2"
-        ]
+        "samplers": get_sampler_list(),
+        "samplers_by_category": get_samplers_by_category()
     }
 
 # スケジューラー一覧取得エンドポイント
@@ -203,9 +197,8 @@ async def get_samplers():
 async def get_schedulers():
     """利用可能なスケジューラーの一覧を取得"""
     return {
-        "schedulers": [
-            "normal", "karras", "exponential", "sgm_uniform", "simple", "ddim_uniform"
-        ]
+        "schedulers": get_scheduler_list(),
+        "schedulers_by_category": get_schedulers_by_category()
     }
 
 # 画像アップロードエンドポイント
