@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: comfyui-a1111-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - COMFYUI_URL=http://host.docker.internal:8188
+      - HOST=0.0.0.0
+      - PORT=8000
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - comfyui
+    networks:
+      - comfyui-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: comfyui-a1111-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - comfyui-network
+
+  comfyui:
+    image: comfyui/comfyui:latest
+    container_name: comfyui-engine
+    ports:
+      - "8188:8188"
+    volumes:
+      - ./comfyui/models:/app/models
+      - ./comfyui/input:/app/input
+      - ./comfyui/output:/app/output
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - comfyui-network
+
+networks:
+  comfyui-network:
+    driver: bridge

@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile.production
+    container_name: comfyui-a1111-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - COMFYUI_URL=http://comfyui:8188
+      - HOST=0.0.0.0
+      - PORT=8000
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    depends_on:
+      - comfyui
+    networks:
+      - comfyui-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.production
+    container_name: comfyui-a1111-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - comfyui-network
+
+  comfyui:
+    image: comfyui/comfyui:latest
+    container_name: comfyui-engine
+    restart: unless-stopped
+    ports:
+      - "8188:8188"
+    volumes:
+      - ./comfyui/models:/app/models
+      - ./comfyui/input:/app/input
+      - ./comfyui/output:/app/output
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - comfyui-network
+
+networks:
+  comfyui-network:
+    driver: bridge
