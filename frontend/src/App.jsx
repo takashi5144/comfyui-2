@@ -7,8 +7,8 @@ import Txt2ImgTab from './components/Txt2ImgTab'
 import Img2ImgTab from './components/Img2ImgTab'
 import InpaintTab from './components/InpaintTab'
 import Header from './components/Header'
-import { getModels, getSamplers, getSchedulers } from './api/comfyui'
-import { API_CONFIG } from './api/config'
+import { getModels, getSamplers, getSchedulers } from './api/comfyui.js'
+import { API_CONFIG } from './api/config.js'
 
 function App() {
   const [models, setModels] = useState([])
@@ -26,9 +26,26 @@ function App() {
           getSchedulers()
         ])
         
-        setModels(modelsData.models || [])
-        setSamplers(samplersData.samplers || [])
-        setSchedulers(schedulersData.schedulers || [])
+        // モデルデータの処理
+        if (modelsData && modelsData.models) {
+          setModels(modelsData.models)
+        } else {
+          setModels(API_CONFIG.DEFAULT_MODELS)
+        }
+        
+        // サンプラーデータの処理
+        if (samplersData && samplersData.samplers) {
+          setSamplers(samplersData.samplers)
+        } else {
+          setSamplers(API_CONFIG.DEFAULT_SAMPLERS)
+        }
+        
+        // スケジューラーデータの処理
+        if (schedulersData && schedulersData.schedulers) {
+          setSchedulers(schedulersData.schedulers)
+        } else {
+          setSchedulers(API_CONFIG.DEFAULT_SCHEDULERS)
+        }
         setIsLoading(false)
       } catch (error) {
         console.error('Failed to load initial data:', error)

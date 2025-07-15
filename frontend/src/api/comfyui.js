@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { API_CONFIG } from './config'
+import { API_CONFIG } from './config.js'
 
 // 本番環境では相対パス、開発環境では設定されたURLを使用
 const API_BASE_URL = import.meta.env.MODE === 'production' ? '/api' : `${API_CONFIG.API_URL}/api`
@@ -42,26 +42,46 @@ export const getGenerationHistory = async (promptId) => {
 
 // モデル一覧の取得
 export const getModels = async () => {
-  const response = await apiClient.get('/models')
-  return response.data
+  try {
+    const response = await apiClient.get('/models')
+    return response.data
+  } catch (error) {
+    console.error('Failed to fetch models:', error)
+    return { models: API_CONFIG.DEFAULT_MODELS }
+  }
 }
 
 // LoRA一覧の取得
 export const getLoras = async () => {
-  const response = await apiClient.get('/loras')
-  return response.data
+  try {
+    const response = await apiClient.get('/loras')
+    return response.data
+  } catch (error) {
+    console.error('Failed to fetch loras:', error)
+    return { loras: [] }
+  }
 }
 
 // サンプラー一覧の取得
 export const getSamplers = async () => {
-  const response = await apiClient.get('/samplers')
-  return response.data
+  try {
+    const response = await apiClient.get('/samplers')
+    return response.data
+  } catch (error) {
+    console.error('Failed to fetch samplers:', error)
+    return { samplers: API_CONFIG.DEFAULT_SAMPLERS }
+  }
 }
 
 // スケジューラー一覧の取得
 export const getSchedulers = async () => {
-  const response = await apiClient.get('/schedulers')
-  return response.data
+  try {
+    const response = await apiClient.get('/schedulers')
+    return response.data
+  } catch (error) {
+    console.error('Failed to fetch schedulers:', error)
+    return { schedulers: API_CONFIG.DEFAULT_SCHEDULERS }
+  }
 }
 
 // 画像のアップロード
