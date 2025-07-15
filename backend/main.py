@@ -25,13 +25,14 @@ from samplers_config import get_sampler_list, get_scheduler_list, get_samplers_b
 # FastAPIアプリケーションの初期化
 app = FastAPI(title="ComfyUI A1111-Style API", version="1.0.0")
 
-# CORS設定
+# CORS設定（開発環境用に寛容な設定）
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:5173", "http://127.0.0.1:5173", "*"],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 # ComfyUIブリッジとワークフロー管理の初期化
@@ -69,6 +70,26 @@ class ModelInfo(BaseModel):
 @app.get("/")
 async def root():
     return {"message": "ComfyUI A1111-Style API Server", "status": "running"}
+
+# ヘルスチェックエンドポイント
+@app.get("/api/health")
+async def health_check():
+    """APIサーバーの状態を確認"""
+    try:
+        # ComfyUIへの接続を確認
+        comfyui_status = await comfyui_bridge.check_connection()
+        return {
+            "status": "healthy",
+            "api_version": "1.0.3",
+            "comfyui_connected": comfyui_status,
+            "timestamp": datetime.now().isoformat()
+        }
+    except Exception as e:
+        return {
+            "status": "unhealthy",
+            "error": str(e),
+            "timestamp": datetime.now().isoformat()
+        }
 
 # 画像生成エンドポイント
 @app.post("/api/generate")

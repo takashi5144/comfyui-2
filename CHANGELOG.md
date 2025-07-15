@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2025-01-15
+
+### Fixed
+- バックエンド接続エラーの修正
+  - API URLを127.0.0.1に変更（localhostより安定）
+  - CORS設定の改善
+  - 環境変数ファイル（.env）の追加
+- ヘルスチェックエンドポイントの追加
+
+### Added
+- 詳細な起動ガイド（STARTUP_GUIDE.md）
+- 統合起動スクリプト（start_all.bat）
+- ComfyUI接続チェック機能
+
+### Changed
+- より具体的なエラーメッセージ
+
 ## [1.0.3] - 2025-01-15
 
 ### Added

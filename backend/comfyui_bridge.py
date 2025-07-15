@@ -16,6 +16,19 @@ class ComfyUIBridge:
         self.comfyui_url = comfyui_url
         self.client_id = str(uuid.uuid4())
         
+    async def check_connection(self) -> bool:
+        """ComfyUIへの接続状態を確認"""
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(
+                    f"{self.comfyui_url}/system_stats",
+                    timeout=aiohttp.ClientTimeout(total=5)
+                ) as response:
+                    return response.status == 200
+        except Exception as e:
+            print(f"[WARNING] ComfyUI connection check failed: {e}")
+            return False
+        
     async def queue_prompt(self, workflow: Dict[str, Any]) -> Dict[str, Any]:
         """ワークフローをComfyUIのキューに送信"""
         try:

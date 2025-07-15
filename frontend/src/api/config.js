@@ -1,8 +1,9 @@
 // API設定
 export const API_CONFIG = {
   // 環境変数からAPIのURLを取得、なければデフォルト値を使用
-  API_URL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
-  WS_URL: import.meta.env.VITE_WS_URL || 'ws://localhost:8000',
+  // ローカル開発時は127.0.0.1を使用（localhostよりも安定）
+  API_URL: import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000',
+  WS_URL: import.meta.env.VITE_WS_URL || 'ws://127.0.0.1:8000',
   
   // タイムアウト設定
   TIMEOUT: 30000, // 30秒
