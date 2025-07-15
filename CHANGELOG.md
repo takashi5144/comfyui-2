@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2025-01-15
+
+### Added
+- 詳細なデバッグログ機能
+  - フロントエンド：コンソールに詳細なリクエスト/レスポンスログ
+  - バックエンド：エラー時のスタックトレース出力
+- A1111からのモデル自動コピー機能
+  - `scripts/copy_models_from_a1111.py`スクリプト
+  - `scripts/copy_models.bat`で簡単実行
+- クイックスタート用バッチファイル
+  - `start_backend.bat`：バックエンド起動
+  - `start_frontend.bat`：フロントエンド起動
+
+### Fixed
+- 画像生成時のネットワークエラー
+  - より詳細なエラーメッセージ表示
+  - エラーハンドリングの改善
+  - API接続エラーの明確化
+
+### Changed
+- READMEにトラブルシューティングセクション追加
+- 画像生成時にmodeパラメータを明示的に送信
+
 ## [1.0.2] - 2025-01-15
 
 ### Fixed

@@ -74,6 +74,9 @@ async def root():
 @app.post("/api/generate")
 async def generate_image(request: GenerateRequest):
     """画像生成のメインエンドポイント"""
+    print(f"[DEBUG] Generate request received: mode={request.mode}, model={request.model}")
+    print(f"[DEBUG] Request details: {request.dict()}")
+    
     try:
         # ワークフローの作成
         if request.mode == "txt2img":
@@ -138,9 +141,14 @@ async def generate_image(request: GenerateRequest):
                 "message": "画像生成を開始しました"
             }
         else:
+            print(f"[ERROR] ComfyUI returned error: {result}")
             raise HTTPException(status_code=500, detail=result.get("error", "Unknown error"))
             
     except Exception as e:
+        print(f"[ERROR] Generate image failed: {str(e)}")
+        print(f"[ERROR] Exception type: {type(e).__name__}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 # 生成状態確認エンドポイント

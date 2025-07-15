@@ -40,8 +40,15 @@ const Txt2ImgTab = ({ models, samplers, schedulers }) => {
     setProgress({ status: 'starting', progress: 0 })
 
     try {
+      console.log('Starting image generation with settings:', settings)
+      
       // 画像生成リクエスト
-      const result = await generateImage(settings)
+      const generateParams = {
+        mode: 'txt2img',
+        ...settings
+      }
+      const result = await generateImage(generateParams)
+      console.log('Generation started:', result)
       
       if (result.success) {
         toast.success('画像生成を開始しました')
@@ -50,6 +57,7 @@ const Txt2ImgTab = ({ models, samplers, schedulers }) => {
         const finalStatus = await pollGenerationStatus(
           result.prompt_id,
           (status) => {
+            console.log('Generation status update:', status)
             setProgress({
               status: status.status,
               progress: status.progress,
@@ -61,6 +69,7 @@ const Txt2ImgTab = ({ models, samplers, schedulers }) => {
         if (finalStatus.status === 'completed') {
           // 生成された画像を取得
           const history = await getGenerationHistory(result.prompt_id)
+          console.log('Generation history:', history)
           const images = history.outputs.map(output => ({
             url: getPreviewImageUrl(output.filename),
             filename: output.filename,
@@ -77,7 +86,12 @@ const Txt2ImgTab = ({ models, samplers, schedulers }) => {
       }
     } catch (error) {
       console.error('Generation error:', error)
-      toast.error('エラーが発生しました: ' + error.message)
+      console.error('Error details:', {
+        message: error.message,
+        response: error.response,
+        request: error.request
+      })
+      toast.error(error.message || 'エラーが発生しました')
     } finally {
       setIsGenerating(false)
       setProgress(null)

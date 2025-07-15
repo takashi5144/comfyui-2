@@ -24,8 +24,28 @@ apiClient.interceptors.response.use(
 
 // 画像生成
 export const generateImage = async (params) => {
-  const response = await apiClient.post('/generate', params)
-  return response.data
+  try {
+    console.log('Generating image with params:', params)
+    console.log('API Base URL:', API_BASE_URL)
+    
+    const response = await apiClient.post('/generate', params)
+    console.log('Generate response:', response.data)
+    
+    return response.data
+  } catch (error) {
+    console.error('Generate image error:', error)
+    console.error('Error response:', error.response?.data)
+    console.error('Error status:', error.response?.status)
+    
+    // より詳細なエラーメッセージ
+    if (error.response) {
+      throw new Error(`サーバーエラー: ${error.response.status} - ${error.response.data?.detail || error.message}`)
+    } else if (error.request) {
+      throw new Error('サーバーに接続できません。バックエンドが起動していることを確認してください。')
+    } else {
+      throw new Error(`リクエストエラー: ${error.message}`)
+    }
+  }
 }
 
 // 生成状態の確認

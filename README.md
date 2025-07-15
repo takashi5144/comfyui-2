@@ -9,6 +9,8 @@ ComfyUIのパワフルなバックエンドに、AUTOMATIC1111風の使いやす
 - 🎨 Text2Image、Img2Img、Inpaintingなどの基本機能
 - 🔧 LoRA、ControlNetなどの高度な機能サポート
 - 💾 設定の保存・読み込み機能
+- 🎯 26種類のサンプラーと20種類のスケジューラー
+- 🔄 A1111からのモデル自動コピー機能
 
 ## システム要件
 
@@ -19,9 +21,15 @@ ComfyUIのパワフルなバックエンドに、AUTOMATIC1111風の使いやす
 
 ## インストール
 
+### 前提条件
+- ComfyUI: `C:\pinokio\api\comfyui.git\app` にインストール済み
+- A1111: `C:\Users\pokot\OneDrive\ドキュメント\A1111 Web UI Autoinstaller` にインストール済み
+
+### セットアップ手順
+
 1. このリポジトリをクローン
 ```bash
-git clone [repository-url]
+git clone https://github.com/takashi5144/comfyui-2.git
 cd ComfyUI-A1111-UI
 ```
 
@@ -39,25 +47,66 @@ npm install
 
 ## 使用方法
 
-1. ComfyUIを起動（ポート8188）
+### クイックスタート（バッチファイル使用）
+
+1. A1111からモデルをコピー（初回のみ）
+```batch
+cd scripts
+copy_models.bat
+```
+
+2. ComfyUIを起動（ポート8188）
 ```bash
-cd [ComfyUI directory]
+cd C:\pinokio\api\comfyui.git\app
 python main.py
 ```
 
-2. バックエンドAPIサーバーを起動
+3. バックエンドAPIサーバーを起動
+```batch
+start_backend.bat
+```
+
+4. フロントエンドを起動
+```batch
+start_frontend.bat
+```
+
+5. ブラウザで http://localhost:3000 を開く
+
+### 手動起動
+
+1. バックエンドAPIサーバーを起動
 ```bash
 cd backend
 python main.py
 ```
 
-3. フロントエンドを起動
+2. フロントエンドを起動
 ```bash
 cd frontend
 npm run dev
 ```
 
-4. ブラウザで http://localhost:3000 を開く
+## トラブルシューティング
+
+### 「ネットワークエラー」が発生する場合
+
+1. ComfyUIが起動しているか確認
+   - http://localhost:8188 にアクセスできることを確認
+
+2. バックエンドが起動しているか確認
+   - http://localhost:8000 にアクセスして `{"message":"ComfyUI A1111-Style API Server","status":"running"}` が表示されることを確認
+
+3. ブラウザの開発者ツール（F12）でコンソールログを確認
+   - エラーの詳細が表示されます
+
+4. バックエンドのコンソールでエラーログを確認
+   - `[ERROR]` で始まるメッセージを確認
+
+### モデルが表示されない場合
+
+1. `scripts/copy_models.bat` を実行してA1111からモデルをコピー
+2. ComfyUIを再起動
 
 ## プロジェクト構造
 
