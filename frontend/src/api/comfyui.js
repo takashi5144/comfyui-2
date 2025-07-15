@@ -1,10 +1,13 @@
 import axios from 'axios'
+import { API_CONFIG } from './config'
 
-const API_BASE_URL = '/api'
+// 本番環境では相対パス、開発環境では設定されたURLを使用
+const API_BASE_URL = import.meta.env.MODE === 'production' ? '/api' : `${API_CONFIG.API_URL}/api`
 
 // APIクライアントの作成
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
+  timeout: API_CONFIG.TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -81,7 +84,11 @@ export const getPreviewImageUrl = (filename) => {
 
 // WebSocket接続の作成
 export const createWebSocketConnection = (onMessage) => {
-  const ws = new WebSocket(`ws://localhost:8000/ws`)
+  const wsUrl = import.meta.env.MODE === 'production' 
+    ? `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws`
+    : API_CONFIG.WS_URL + '/ws'
+    
+  const ws = new WebSocket(wsUrl)
   
   ws.onopen = () => {
     console.log('WebSocket connected')

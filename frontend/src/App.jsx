@@ -8,6 +8,7 @@ import Img2ImgTab from './components/Img2ImgTab'
 import InpaintTab from './components/InpaintTab'
 import Header from './components/Header'
 import { getModels, getSamplers, getSchedulers } from './api/comfyui'
+import { API_CONFIG } from './api/config'
 
 function App() {
   const [models, setModels] = useState([])
@@ -31,7 +32,11 @@ function App() {
         setIsLoading(false)
       } catch (error) {
         console.error('Failed to load initial data:', error)
-        toast.error('初期データの読み込みに失敗しました')
+        // エラーが発生してもデフォルト値で続行
+        setModels(API_CONFIG.DEFAULT_MODELS)
+        setSamplers(API_CONFIG.DEFAULT_SAMPLERS)
+        setSchedulers(API_CONFIG.DEFAULT_SCHEDULERS)
+        toast.warning('サーバーに接続できません。デフォルト設定を使用します。')
         setIsLoading(false)
       }
     }
