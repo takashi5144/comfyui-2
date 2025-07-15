@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 2025-01-15
+
+### Added
+- 完全な診断ツール（diagnose.bat）
+- テストサーバー（test_server.py）
+- ポート確認ツール（check_ports.bat）
+- 詳細なトラブルシューティングガイド（TROUBLESHOOTING.md）
+
+### Improved
+- エラー診断の自動化
+- より詳細な問題解決手順
+
 ## [1.0.5] - 2025-01-15
 
 ### Fixed
