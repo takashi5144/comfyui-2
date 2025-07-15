@@ -20,7 +20,7 @@
   
   /* テキストエリアスタイル */
   .textarea-field {
-    @apply bg-gray-700 border border-gray-600 rounded px-3 py-2 text-gray-100 focus:outline-none focus:border-orange-500 transition-colors resize-vertical;
+    @apply bg-gray-700 border border-gray-600 rounded px-3 py-2 text-gray-100 focus:outline-none focus:border-orange-500 transition-colors resize-y;
   }
   
   /* セレクトボックススタイル */

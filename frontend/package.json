@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A1111-style interface for ComfyUI",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
