@@ -1,0 +1,28 @@
+{
+  "name": "comfyui-a1111-ui",
+  "version": "1.0.0",
+  "description": "A1111-style interface for ComfyUI - Powerful image generation with intuitive UI",
+  "author": "takashi5144",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takashi5144/comfyui-2.git"
+  },
+  "keywords": [
+    "comfyui",
+    "stable-diffusion",
+    "ai",
+    "image-generation",
+    "a1111"
+  ],
+  "scripts": {
+    "setup": "npm install && cd backend && pip install -r requirements.txt",
+    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "backend": "cd backend && python main.py",
+    "frontend": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
